@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Input Form</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="s3.css">
+</head>
+<body>
+    <div class="container">
+        <h1>College Input Form</h1>
+        <form id="college-form">
+            <label for="college-name">College Name:</label>
+            <input type="text" id="college-name" name="college-name" required>
+
+            <h2>Student Details</h2>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="degree">Degree:</label>
+            <input type="text" id="degree" name="degree" required>
+
+            <label for="specialization">Specialization:</label>
+            <input type="text" id="specialization" name="specialization" required>
+
+            <label for="branch">Branch:</label>
+            <input type="text" id="branch" name="branch" required>
+
+            <label for="resume">Resume (PDF):</label>
+            <input type="file" id="resume" name="resume" accept=".pdf" required>
+
+            <button type="button" id="save-college">Save College</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById("save-college").addEventListener("click", function () {
+            const collegeData = {
+                CollegeName: document.getElementById("college-name").value,
+                StudentDetails: {
+                    Name: document.getElementById("name").value,
+                    Degree: document.getElementById("degree").value,
+                    Specialization: document.getElementById("specialization").value,
+                    Branch: document.getElementById("branch").value,
+                    Resume: document.getElementById("resume").files[0]?.name || "Not uploaded",
+                }
+            };
+
+            // Check if all fields are filled
+            if (
+                !collegeData.CollegeName ||
+                !collegeData.StudentDetails.Name ||
+                !collegeData.StudentDetails.Degree ||
+                !collegeData.StudentDetails.Specialization ||
+                !collegeData.StudentDetails.Branch ||
+                collegeData.StudentDetails.Resume === "Not uploaded"
+            ) {
+                alert("Please fill all fields and upload a resume.");
+                return;
+            }
+
+            // Save data to Excel file
+            let existingData = [];
+            const existingFile = "colleges.xlsx";
+
+            const loadFile = async () => {
+                try {
+                    const response = await fetch(existingFile);
+                    const data = new Uint8Array(await response.arrayBuffer());
+                    const workbook = XLSX.read(data, { type: "array" });
+                    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                    existingData = XLSX.utils.sheet_to_json(worksheet);
+                } catch (error) {
+                    console.warn("No existing file found. A new file will be created.");
+                }
+                saveData();
+            };
+
+            const saveData = () => {
+                existingData.push(collegeData);
+
+                const workbook = XLSX.utils.book_new();
+                const worksheet = XLSX.utils.json_to_sheet(existingData);
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Colleges");
+                XLSX.writeFile(workbook, "colleges.xlsx");
+
+                alert("College and student data saved successfully!");
+                window.location.href = "collegedashboard.html";
+            };
+
+            loadFile();
+        });
+    </script>
+</body>
+</html>

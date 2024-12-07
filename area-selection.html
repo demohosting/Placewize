@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area Selection</title>
+    <link rel="stylesheet" href="area-selection.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Select a State</h1>
+        <div class="state-selection">
+            <label for="state">Choose a State:</label>
+            <select id="state" onchange="displayColleges()">
+                <option value="">--Select State--</option>
+                <option value="odisha">Odisha</option>
+                <option value="karnataka">Karnataka</option>
+                <option value="maharashtra">Maharashtra</option>
+                <option value="uttar-pradesh">Uttar Pradesh</option>
+                <option value="tamil-nadu">Tamil Nadu</option>
+            </select>
+        </div>
+
+        <div id="colleges-list" class="colleges-container">
+            <h2>Registered Colleges</h2>
+            <ul id="colleges">
+                <!-- Colleges will be populated here -->
+            </ul>
+        </div>
+
+        <button type="submit" onclick="redirectToColleges(event)">Enter</button>
+    </div>
+
+    <script>
+        function redirectToColleges(event) {
+            event.preventDefault();
+            window.location.href = "colleges-list.html";
+        }
+    </script>
+</body>
+</html>
+

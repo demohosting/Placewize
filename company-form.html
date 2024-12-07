@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Information Form</title>
+    <link rel="stylesheet" href="company-form.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1>Company Information</h1>
+        <form>
+            <label for="company-name">Company Name</label>
+            <input type="text" id="company-name" placeholder="Enter company name" required>
+
+            <label for="authorized-person">Name of Authorized Person</label>
+            <input type="text" id="authorized-person" placeholder="Enter name of authorized person" required>
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="Enter email address" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="Enter phone number" required>
+
+            <label for="registration-no">Company Registration No.</label>
+            <input type="text" id="registration-no" placeholder="Enter registration number" required>
+
+            <button type="submit" onclick="redirectToLocation(event)">Submit</button>
+        </form>
+        <script>
+            function redirectToLocation(event) {
+                event.preventDefault();
+                window.location.href = "area-selection.html";
+            }
+        </script>
+    </div>
+</body>
+</html>

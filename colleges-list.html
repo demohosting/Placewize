@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1>Engineering Colleges in Odisha</h1>
+        <ul id="college-list"></ul>
+    </div>
+    <script>
+        const colleges = [
+            "National Institute of Technology, Rourkela",
+            "CET Bhubaneswar (College of Engineering and Technology)",
+            "KIIT University, Bhubaneswar",
+            "SOA University (ITER), Bhubaneswar",
+            "Veer Surendra Sai University of Technology, Sambalpur",
+            "Silicon Institute of Technology, Bhubaneswar",
+            "CV Raman Global University, Bhubaneswar",
+            "Gandhi Institute of Engineering and Technology, Gunupur",
+            "Indira Gandhi Institute of Technology, Sarang",
+            "Parala Maharaja Engineering College, Berhampur"
+        ];
+
+        const collegeList = document.getElementById("college-list");
+
+        colleges.forEach((college, index) => {
+            const listItem = document.createElement("li");
+            listItem.innerHTML = `<button onclick="viewStudents(${index})">${college}</button>`;
+            collegeList.appendChild(listItem);
+        });
+
+        function viewStudents(index) {
+            alert(`Showing student list for: ${colleges[index]}`);
+            window.location.href = `student-list.html?college=${encodeURIComponent(colleges[index])}`;
+        }
+    </script>
+</body>
+</html>

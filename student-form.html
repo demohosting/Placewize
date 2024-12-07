@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Input Form</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="s.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Student Input Form</h1>
+        <form id="student-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="degree">Degree:</label>
+            <input type="text" id="degree" name="degree" required>
+
+            <label for="specialization">Specialization:</label>
+            <input type="text" id="specialization" name="specialization" required>
+
+            <label for="college">College:</label>
+            <input type="text" id="college" name="college" required>
+
+            <label for="branch">Branch:</label>
+            <input type="text" id="branch" name="branch" required>
+
+            <label for="resume">Resume (PDF):</label>
+            <input type="file" id="resume" name="resume" accept=".pdf" required>
+
+            <button type="button" id="save-student">Save Student</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById("save-student").addEventListener("click", function () {
+            const studentData = {
+                Name: document.getElementById("name").value,
+                Degree: document.getElementById("degree").value,
+                Specialization: document.getElementById("specialization").value,
+                College: document.getElementById("college").value,
+                Branch: document.getElementById("branch").value,
+                Resume: document.getElementById("resume").files[0]?.name || "Not uploaded",
+            };
+
+            // Check if all fields are filled
+            if (
+                !studentData.Name ||
+                !studentData.Degree ||
+                !studentData.Specialization ||
+                !studentData.College ||
+                !studentData.Branch ||
+                studentData.Resume === "Not uploaded"
+            ) {
+                alert("Please fill all fields and upload a resume.");
+                return;
+            }
+
+            // Save data to an Excel file
+            const workbook = XLSX.utils.book_new();
+            const worksheet = XLSX.utils.json_to_sheet([studentData]);
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
+            XLSX.writeFile(workbook, "students.xlsx");
+
+            // Alert success and redirect to Student Dashboard
+            alert("Student data saved successfully!");
+            window.location.href = "student-dashboard.html";
+        });
+    </script>
+</body>
+</html>
+
+
+

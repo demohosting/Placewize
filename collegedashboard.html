@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="S4.CSS">
+</head>
+<body>
+    <div class="container">
+        <h1>College Dashboard</h1>
+        <table id="student-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Degree</th>
+                    <th>Specialization</th>
+                    <th>College</th>
+                    <th>Branch</th>
+                    <th>Resume</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const loadStudentData = async () => {
+            const fileName = "students.xlsx"; // Replace with your Excel file name
+            try {
+                const response = await fetch(fileName);
+                const data = new Uint8Array(await response.arrayBuffer());
+                const workbook = XLSX.read(data, { type: "array" });
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                const students = XLSX.utils.sheet_to_json(worksheet);
+
+                const tableBody = document.querySelector("#student-table tbody");
+                students.forEach(student => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${student.Name}</td>
+                        <td>${student.Degree}</td>
+                        <td>${student.Specialization}</td>
+                        <td>${student.College}</td>
+                        <td>${student.Branch}</td>
+                        <td><a href="${student.Resume}" download>Download</a></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error loading student data:", error);
+                alert("No student data found! Please ensure 'students.xlsx' exists in the same directory.");
+            }
+        };
+
+        loadStudentData();
+    </script>
+</body>
+</html>
